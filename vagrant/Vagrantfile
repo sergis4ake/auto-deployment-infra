@@ -1,0 +1,84 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+bootstrap = <<SCRIPT
+  cat /home/vagrant/.ssh/me.pub >> /home/vagrant/.ssh/authorized_keys
+  useradd -m -s /bin/bash -U ansible
+  cp -pr /home/vagrant/.ssh /home/ansible/
+  chown -R ansible:ansible /home/ansible
+  echo "%ansible ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/ansible
+SCRIPT
+
+
+Vagrant.configure("2") do |config|
+  config.ssh.insert_key = false
+  VAGRANT_COMMAND = ARGV[0]
+  if VAGRANT_COMMAND == "ssh"
+    config.ssh.username = 'ansible'
+  end
+  config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/me.pub"
+  config.vm.provision "shell", inline: "#{bootstrap}", privileged: true
+  # node1
+  config.vm.define :node1 do |node1|
+    node1.vm.box = "debian/buster64"
+    node1.vm.hostname = "node1"
+    node1.vm.network :private_network, ip: "10.1.1.101"
+    node1.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+      vb.cpus = 2
+    end
+  end
+
+  # node2
+  config.vm.define :node2 do |node2|
+    node2.vm.box = "debian/buster64"
+    node2.vm.hostname = "node2"
+    node2.vm.network :private_network, ip: "10.1.1.102"
+    node2.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+      vb.linked_clone = true
+      vb.cpus = 2
+    end
+  end
+  
+  # node3: node3
+  config.vm.define :node3 do |node3|
+    node3.vm.box = "debian/buster64"
+    node3.vm.hostname = "node3"
+    node3.vm.network :private_network, ip: "10.1.1.103"
+    node3.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+      vb.linked_clone = true
+      vb.cpus = 2
+    end
+  end
+
+  # node4
+  config.vm.define :node4 do |node4|
+    node4.vm.box = "debian/buster64"
+    node4.vm.hostname = "wcpfront"
+    node4.vm.network :private_network, ip: "10.1.1.104"
+    node4.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+      vb.linked_clone = true
+      vb.cpus = 2
+    end
+  end
+
+  # node5
+  config.vm.define :node5 do |node5|
+    node5.vm.box = "debian/buster64"
+    node5.vm.hostname = "node5"
+    node5.vm.network :private_network, ip: "10.1.1.105"
+    node5.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+      vb.linked_clone = true
+      vb.cpus = 2
+    end
+  end
+
+#  config.vm.provision "ansible" do |ansible|
+#    ansible.playbook = "site.yaml"
+#    ansible.inventory_path = "ansible_hosts"
+#  end
+end
