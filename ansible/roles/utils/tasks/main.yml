@@ -1,0 +1,12 @@
+---
+- name: Update cache
+  apt:
+    update_cache: True
+  become: True
+
+- name: Install python packages
+  package: 
+    name: "{{ item }}" 
+    state: present
+  with_items: "{{ packages }}"
+  become: True

@@ -1,0 +1,17 @@
+[all]
+node1
+node2
+node3
+node4
+node5
+
+[front]
+node1
+node2
+
+[back]
+node3
+node4
+
+[ms]
+node5

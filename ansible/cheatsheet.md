@@ -42,6 +42,8 @@ $ ansible-doc service -s <modulo>
 ### Set group_vars y host_vars
  
  - Crear los directorios group_vars y host_vars dentro del directorio del proyecto.
+ - Utilizar archivos sin extensión `.yml` dentro de estos directorios.
+ - Las variables definidas aquí se presentan de manera general, y se pueden superponer mediante la definifición de variables en el directorio `/roles/example-rol/vars/main.yml`
  - Crear un archivo con el nombre de un servidor (de un grupo de servidores) con el nombre group_vars/grupo1 y en el archivo definir la variable.
    ```
    [grupo1:vars]
@@ -53,3 +55,5 @@ $ ansible-doc service -s <modulo>
 ### Ansible Fact
 
 `$ ansible all -m setup -a 'filter=ansible_distribution'`
+
+

@@ -1,0 +1,27 @@
+---
+- name: Update cache
+  apt:
+    update_cache: True
+  become: True
+
+- name: Install python packages [local vars]
+  package: 
+    name: "{{ item }}" 
+    state: present
+  with_items: "{{ packages }}"
+  become: True
+
+
+- name: Install vim packages [group vars]
+  package: 
+    name: "{{ item }}" 
+    state: present
+  with_items: "{{ var_example1 }}"
+  become: True
+
+- name: Install packages [mix vars]
+  package: 
+    name: "{{ item }}" 
+    state: present
+  with_items: "{{ example }}"
+  become: True

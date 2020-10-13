@@ -1,0 +1,6 @@
+---
+- name: All roles for all hosts
+  hosts: all
+  roles:
+    - { role: utils, tags: ['base'] }
+    - { role: python, tags: ['base'] }
